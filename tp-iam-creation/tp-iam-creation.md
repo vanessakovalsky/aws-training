@@ -16,5 +16,8 @@ Durée : 20 à 30 minutes
 
 ## Création d'un groupe et ajout de permission
 * Revenir dans le menu Groups et créer un groupe qui sera utilisé pour votre application
-* Ajouter votre propre utilisateur à ce groupe 
-* Assigner les permissions à ce groupes permettant de manipuler les instances EC2
+* Créer un utilisateur et l'ajouter à ce groupe 
+* Assigner les permissions à ce groupes permettant de manipuler les instances EC2 seulement
+* Connecter vous avec cet utilisateur et vérifier qu'il ne peut pas accéder à IAM, mais qu'il peut bien manipuler les EC2.
+
+
