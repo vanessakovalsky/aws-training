@@ -7,7 +7,7 @@ Ces exercices accompagne la formation AWS développeur qui dure 3 jours
 * [Une application statique sur un storage S3](https://github.com/vanessakovalsky/aws-training/blob/master/tp-s3-storage/tp-s3-storage.md)
 * [Mise en place d’une application qui réagit à des évènements avec Lambda et CloudWatch](https://github.com/vanessakovalsky/aws-training/blob/master/tp-application-event/tp-application-event.md)
 * [Mise en place d'une API Gateway](https://github.com/vanessakovalsky/aws-training/blob/master/tp-api-gateway/tp-api-gateway.md)
-* Mise en place d'authentification avec Cognito
+* [Mise en place d'authentification avec Cognito](https://github.com/vanessakovalsky/aws-training/blob/master/tp-auth-cognito/tp-auth-cognito.md)
 * Deploiement d'une application complète en serverless
 * Deploiement et mise à l'échelle de conteneurs
 * Déploiement avec Beanstalk
