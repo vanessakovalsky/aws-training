@@ -3,7 +3,7 @@
 Cet exercice va nous permettre de créer une FAQ en micro-service.
 
 Voici l'architecture
-[https://s3-us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-58/2.0.14.prod/scripts/micro-service.png]
+![](https://s3-us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-58/2.0.14.prod/scripts/micro-service.png)
 
 Les objectifs de cet exercice sont les suivants :
 * Création d'un fonction AWS Lambda
