@@ -24,6 +24,8 @@ Durée : entre 90 et 120 minutes
 * * Terminal : Permet d'exécuter des commandes
 
 ## Installer le code du jeu
+/!\ Il est nécessaire de choisir une région parmi celle qui propose l'envoi de SMS voir ici : https://docs.aws.amazon.com/fr_fr/sns/latest/dg/sns-supported-regions-countries.html 
+* Penser à changer la région avant de faire la suite, pour cela utiliser le menu déroulant en haut à droite sur la console web :) 
 * Dans l'environnement Cloud 9, utiliser le terminal pour récupérer les fichiers
 ```
 cd ~/environment
@@ -41,7 +43,6 @@ ls
 npm install --prefix scripts/ && npm install --prefix application
 ```
 * Ensuite nous devons définir la région à utilisé, par exemple pour us-east-1
-/!\ Il est nécessaire de choisir une région parmi celle qui propose l'envoi de SMS voir ici : https://docs.aws.amazon.com/fr_fr/sns/latest/dg/sns-supported-regions-countries.html 
 ```
 echo "export AWS_REGION=us-east-1" >> env.sh && source env.sh
 ```
