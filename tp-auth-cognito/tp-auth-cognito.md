@@ -41,28 +41,28 @@ Durée : 30 à 45 minutes
 * Cliquer sur Create.
 * Cliquer sur **Return to pool details** 
 * Puis cliquer sur **Create pool**.
-* Dans Enabled Identity Providers cliquer sur **Select All**.
-* Dans **Callback URL(s)** entrer : `S3 bucket's Object URL`
-* Aller dans la page de S3, cliquer sur votre bucket, puis sur votre fichier index.html et copier 
- **Object URL**.
-* Cliquer sur  **Save changes** 
+
 * Puis choisir : **domain name**.
 * * Your domaine name : votreprenom
 * * Cliquer sur Check availability pour vérifier que le domaine soit disponible
 * Cliquer sur Save Changes
+* Dans le menu de gauche aller dans App Client Settings 
+* Dans Enabled Identity Providers cliquer sur **Select All**.
+* Dans **Callback URL(s)** entrer : `S3 bucket's Object URL` (adresse de votre fichier sur le bucket S3 voir-ci dessous pour l'obtenir)
+* Aller dans la page de S3, cliquer sur votre bucket, puis sur votre fichier index.html et copier 
+ **Object URL**.
+* Dans OAuth 2.0 cocher : 
+* * Authorization code grand
+* * phone
+* * email
+* * openid
+* * profile
+* Cliquer sur  **Save changes** 
+
 
 ## Tester votre site 
-* Pour se connecter en utilisant AWS Cognito, entrer l'adresse :
-```
-https://<your domain>/login?response_type=code&client_id=<your_app_client_id>&redirect_uri=<your_callback_url>
-```
->  Vous trouvez votre domaine dans le menu de gauche de l'intégration de l'app en cliquant sur   **Domain name**. 
-
-> Vous trouvez **your_app_cleient_id**, **your_callback_url** dans le menu de gauche de l'intégration de l'app en cliquant sur **App client setting**.
-Par exemple :
-```
-https://yourname.auth.yourregion.amazoncognito.com/login?response_type=token&client_id=1234xxxxxx123xxxx78x93x80x&redirect_uri=https://s3.amazonaws.com/yourbucketname/index.html
-```
+* Pour se connecter en utilisant AWS Cognito, 
+dans l'écran App client Settings, trouvez votre App et cliquer sur Launch UI 
 * Vous pouvez vous identifier ou vous créer un compte
 * Créer vous un compte
 * Vérifiez que vous avez bien reçu le mail
