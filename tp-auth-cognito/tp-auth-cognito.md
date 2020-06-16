@@ -8,7 +8,7 @@ Cet exercice a pour objectifs :
 Durée : 30 à 45 minutes
 
 ## Héberger un site statique
-* Télécharger le fichier [index.html]
+* Télécharger le fichier [index.html](index.html)
 * Dans la console web, choisir Service puis S3
 * Cliquer sur Create Bucket puis Create
 * * Bucket name: `cognitoyourname`.
