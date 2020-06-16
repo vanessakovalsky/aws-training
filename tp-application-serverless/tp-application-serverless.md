@@ -256,6 +256,59 @@ curl -X POST ${BASE_URL}/games \
 ```
 export GAME_ID=<yourGameId>
 ```
+* Essayer de réxecuter la commande de création de partie sans le token :
+```
+curl -X POST ${BASE_URL}/games \
+ -H 'Content-Type: application/json' \
+  -d '{
+	"opponent": "theseconduser"
+}'
+```
+* Vous obtenez alors une erreur en retour :
+```
+{"message":"jwt must be provided"}
+```
+
+* Pour reprendre une partie en cours, on utilise une requête GET sur le endpoint /games/gameid
+```
+curl -X GET ${BASE_URL}/games/${GAME_ID}
+```
+* Vous obtenez alors les informations sur la partie en cours :
+```
+{"heap2":4,"heap1":5,"heap3":5,"gameId":"32597bd8","user2":"theseconduser","user1":"myfirstuser","lastMoveBy":"myfirstuser"}
+```
+
+Il ne reste plus qu'à jouer des coups pour faire avancer la partie
+* On utilise alors une requête POST sur games/gameid
+```
+curl -X POST ${BASE_URL}/games/${GAME_ID} \
+  -H "Authorization: ${SECOND_ID_TOKEN}" \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"changedHeap": "heap1",
+	"changedHeapValue": 0
+}'
+```
+* Attention à utiliser le bon token, celui du joueur qui n'a pas joué en dernier
+* Le retour affiche l'état de la partie
+```
+{"heap2":4,"heap1":0,"heap3":5,"gameId":"32597bd8","user2":"theseconduser","user1":"myfirstuser","lastMoveBy":"theseconduser"}
+```
+* Faites d'autres coups pour vider les piles en alternants les utilisateurs
+* A la fin de la partie les deux utilisateurs reçoivent un SMS les informants du résultat de la partie.
+
+-> Félicitations, vous avez maintenant une application back end complète et fonctionnelle
+
+## Pour aller plus loin
+
+* Si vous le souhaitez, vous pouvez ajouter une application front end faite en JS (avec un framework type React ou Angular par exemple), que vous déploierez dans un bucket S3 sous forme d'un site statique et qui utilisera cet API.
+
+## Nettoyage de vos environnements
+* POur supprimer l'ensemble des ressources crées vous pouvez utiliser la commande :
+```
+bash scripts/delete-resources.sh
+```
+* Puis dans la console de Cloud9, supprimer l'environnement de l'application également
 
 
 
