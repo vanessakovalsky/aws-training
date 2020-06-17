@@ -57,9 +57,13 @@ sudo yum install zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-deve
 git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 ./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
  ```
+ * A la fin de l'installation, l'installer vous recommande d'exporter le chemin de l'éxecutable de eb avec une commande export, pensez à la lancer. La commande ressemble à ça :
+```
+ echo 'export PATH="/home/ec2-user/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+```
  * Initialiser l'environnement Beanstalk avec la commande 
  ```
-cd node-elastic-beanstalk
+cd code
 eb init 
  ```
  * Vous devez alors répondre à une série de questions :
