@@ -9,5 +9,5 @@ Ces exercices accompagne la formation AWS développeur qui dure 3 jours
 * [Mise en place d'une API Gateway](https://github.com/vanessakovalsky/aws-training/blob/master/tp-api-gateway/tp-api-gateway.md)
 * [Mise en place d'authentification avec Cognito](https://github.com/vanessakovalsky/aws-training/blob/master/tp-auth-cognito/tp-auth-cognito.md)
 * [Deploiement d'une application complète en serverless](https://github.com/vanessakovalsky/aws-training/blob/master/tp-application-serverless/tp-application-serverless.md)
-* Deploiement et mise à l'échelle de conteneurs
+* [Deploiement et mise à l'échelle de conteneurs](https://github.com/vanessakovalsky/aws-training/blob/master/tp-container/tp-container.md)
 * Déploiement avec Beanstalk
