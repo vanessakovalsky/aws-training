@@ -53,7 +53,7 @@ git clone https://github.com/davidtucker/node-elastic-beanstalk.git .
  ```
 cd ..
 yum groupinstall "Development Tools"
-sudo yum install zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64 -y
+sudo yum install zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64 python3 -y
 git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 ./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
  ```
