@@ -88,6 +88,7 @@ docker run -t -i -p 80:80 hello-world-monprenom
  * Vous obtenez alors un log apache, ne pas quitter ou fermer le terminal pour l'instant, c'est lui qui fait tourner le conteneur
  * Ouvrir un autre onglet et rentrer l'adresse de votre instance EC2 (la même que vous utiliser pour SSH)
  * Une page devrait s'afficher avec le contenu Hello World
+ * Si celle-ci ne s'afficha pas penser à vérifier que le port 80 est bien ouvert pour tout le monde dans le groupe de sécurité de votre instance EC2.
 
  ## Transmettre notre image à un registre ECR
 Maintenant que l'image de notre application est prête nous allons la stocker sur un registre d'image. Cela permet par la suite d'utiliser directement l'image stocké, sans avoir besoin de la builder de nouveau.
@@ -129,7 +130,7 @@ docker push 433676120466.dkr.ecr.us-east-2.amazonaws.com/demo-repository
 * * EC2 instances types : t2.micro
 * * Number of instance : 1 
 * * EC2 AMI : Amazon Linux 2 AMI
-* * Root EBS Volume Size (GiB) : 10
+* * Root EBS Volume Size (GiB) : 30
 * * Key pair : None
 * Laisser les autres options par défaut et cliquer sur Create en bas de la page
 * Cliquer sur View cluster en haut de la page une fois la création terminé pour revenir sur la page du cluster.
