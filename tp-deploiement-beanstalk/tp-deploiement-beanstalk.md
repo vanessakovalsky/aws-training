@@ -5,7 +5,6 @@ Cet exercice permet de déployer une application en utilisant AWS Beanstalk et e
 Les objectifs de cet exerice sont les suivants :
 * Gérer son code en utilisant un gestionnaire de version de code
 * Déployer son application avec Beanstalk
-* Externaliser les sessions pour améliorer la scalabilité
 
 Durée entre 60 et 90 minutes
 
@@ -41,31 +40,10 @@ Git est maintenant installé et configurer, nous allons pouvoir récupérer le c
 mkdir ~/code
 cd ~/code
 ```
-* Créer un dossier pour l'application et se positionner dedans
+* Récupérer le code depuis ce dépôt git :
 ```
-mkdir app
-cd app
+git clone https://github.com/davidtucker/node-elastic-beanstalk.git .
 ```
-* Récupérer et décompresser l'archive dans le dossier 
-```
-curl -sL http://d118jxrmrxsq90.cloudfront.net/turn-based.tar | tar -xv
-```
-
-## Initialiser le dépôt git
-* Initialiser un dépôt et ajouter le code dans ce depôt:
- ```
-git init
-git add -A .
-git status
- ```
- * Sauvegarder via un commit ces modifications
- ```
-git commit -m "First commit: v1"
- ```
- * Ajouter un tag pour la v1 de l'application
- ```
-git tag -a v1 -m "v1"
- ```
 
  -> Félicitation, le code est maintenant géré en version par Git. Sur un projet réel, de nombreuses modifications seraient apportées au code puis commités (sauvegardés) avant le déploiement. Ici la version est utilisable en l'état sans besoin de faire des modifications.
 
