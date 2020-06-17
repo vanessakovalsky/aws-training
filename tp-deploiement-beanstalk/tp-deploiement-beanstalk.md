@@ -59,7 +59,7 @@ git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
  ```
  * Initialiser l'environnement Beanstalk avec la commande 
  ```
-cd app/application
+cd node-elastic-beanstalk
 eb init 
  ```
  * Vous devez alors répondre à une série de questions :
