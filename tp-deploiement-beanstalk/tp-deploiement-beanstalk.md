@@ -68,7 +68,7 @@ eb init
  ```
  * Vous devez alors répondre à une série de questions :
  * * Select a default region : choisir le numéro de la région us-east-2
- * * Enter Application name : app
+ * * Enter Application name : appPrenom
  * * Select a platform version : 6 (NodeJS)
  * * Select a platform branch : 1
  * * Do you want to continue with AWS CodeCommit : n
