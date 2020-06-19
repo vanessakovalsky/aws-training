@@ -75,7 +75,7 @@ eb init
  * * Do you want to set up SSH for your instances : y
  * * Select a key pair : créer la clé en suivant les instructions
     
- La configuration de l'application dans Beanstalk a été créé. Elle est stockée dans un dossier .elasticbeanstalk à l'intérieur du dossier de l'application (app dans notre cas)
+ La configuration de l'application dans Beanstalk a été créé. Elle est stockée dans un dossier .elasticbeanstalk à l'intérieur du dossier de l'application (code dans notre cas)
 
  ## Déployer l'application 
 * Pour déployer l'application il faut créer l'environnement avec la commande :
