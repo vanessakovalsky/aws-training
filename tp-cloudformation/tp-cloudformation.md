@@ -10,7 +10,7 @@ Il a pour objectifs :
 * Ajouter une définition `AWSTemplateFormatVersion` à votre template (voir [Template anatomy](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html)).
 * Ajouter une Description à votre template (voir [Template anatomy](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html)). 
 * Ajouter une section `Resources` à votre template (voir [Template anatomy](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html)).
-* Ajouter un bucket **S3 bucket** à la section `Resources` de votre template(Voir [Type de Ressource: S3 bucket](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html)).
+* Ajouter un bucket **S3 bucket** à la section `Resources` de votre template : il est nécessaire d'indiquer le logical id (qui permet d'identifier la ressource de manière unique, pour pouvoir la modifier par la suite) et le type de ressource(Voir [Type de Ressource: S3 bucket](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html)).
 * Ajouter un BucketName comme seule propriétés de la section 'Properties' du bucket S3. Attention : le nom du bucket doit être unique de manière global
 Essayer  `learn-cloudformation-$username` en remplaçant `$username` par votre nom.
 
