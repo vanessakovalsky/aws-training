@@ -139,14 +139,321 @@ git push deploy master
 -> Cette fois le pipeline doit fonctionner, félicitation, votre pipeline est en place.
 
 ## Ajouter le build d'une application 
+* Dans le fichier de template, ajouter le rôle pour CodeBuild :
+```
+  CodeBuildRole:
+    DependsOn: CloudFormationRole # make sure that CloudFormationRole is deleted last
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - 'codebuild.amazonaws.com'
+          Action:
+          - 'sts:AssumeRole'
+      Policies:
+      - PolicyName: ServiceRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Sid: CloudWatchLogsPolicy
+            Effect: Allow
+            Action: 
+            - 'logs:CreateLogGroup'
+            - 'logs:CreateLogStream'
+            - 'logs:PutLogEvents'
+            Resource: '*'
+          - Sid: CodeCommitPolicy
+            Effect: Allow
+            Action: 'codecommit:GitPull'
+            Resource: '*'
+          - Sid: S3GetObjectPolicy
+            Effect: Allow
+            Action: 
+            - 's3:GetObject'
+            - 's3:GetObjectVersion'
+            Resource: '*'
+          - Sid: S3PutObjectPolicy
+            Effect: 'Allow'
+            Action: 's3:PutObject'
+            Resource: '*'
+```
+* Puis ajouter à la section Resources, avant le Pipeline le projet CodeBUild :
+```
+  AppProject:
+    DependsOn: CloudFormationRole # make sure that CloudFormationRole is deleted last
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: 'BUILD_GENERAL1_SMALL'
+        Image: 'aws/codebuild/nodejs:6.3.1'
+        Type: 'LINUX_CONTAINER'
+      Name: !Sub '${AWS::StackName}-app'
+      ServiceRole: !GetAtt 'CodeBuildRole.Arn'
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: |
+          version: 0.1
+          phases:
+            build:
+              commands:
+              - 'cd app/ && npm install'
+              - 'cd app/ && npm test'
+              - 'rm -rf app/node_modules/'
+              - 'rm -rf app/test/'
+              - 'cd app/ && npm install --production'
+          artifacts:
+            files:
+            - 'app/**/*'
+      TimeoutInMinutes: 10
+```
+* Enfin rajouter une étape (stage) au pipeline :
+```
+      - Name: Build
+        Actions:
+        - Name: BuildAndTestApp
+          ActionTypeId:
+            Category: Build
+            Owner: AWS
+            Provider: CodeBuild
+            Version: 1
+          Configuration:
+            ProjectName: !Ref AppProject
+          InputArtifacts:
+          - Name: Source
+          OutputArtifacts:
+          - Name: App
+          RunOrder: 1
+```
+* On peut maintenant sauvegarder les changements et les envoyer pour relancer le Pipeline 
+```
+git add deploy/pipeline.yml
+git commit -m "lab 02"
+git push deploy master
+```
+-> Félicitations vous savez maintenant builder votre code à partir d'un pipeline 
 
+## Déployer son application dans un environnement sans serveur avec Lambda
+Dans cette dernière partie, nous allons utilier un deuxième template pour créer une stack Serverless basée sur Lambda, APi Gateway, CloudWatch et SNS.
+Pour cela nous utilisons le framework SAM (Serverless Application Model) : https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html 
+* Créer un dossier infrastructure et un fichier serverless.yaml :
+```
 
+```
+* OUvrir le fichier et copier le contenu suivant à l'intérieur :
+```
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31' # this line activates the SAM transformations!a
+Description: 'Serverless'
+Parameters:
+  # S3Bucket and S3Key where the zipped code is located. This will be created with CodeBuild
+  S3Bucket:
+    Type: String
+  S3Key:
+    Type: String
+  AdminEmail:
+    Description: 'The email address of the admin who receives alerts.'
+    Type: String
+Resources:
+  # A SNS topic is used to send alerts via Email to the value of the AdminEmail parameter 
+  Alerts:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      Subscription:
+      - Endpoint: !Ref AdminEmail
+        Protocol: email
+  ApiGateway:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: Prod
+      DefinitionBody:
+        swagger: '2.0'
+        basePath: '/'
+        info:
+          title: Serverless
+        schemes:
+        - https
+        # We want to validate the body and request parameters
+        x-amazon-apigateway-request-validators:
+          basic:
+            validateRequestBody: true
+            validateRequestParameters: true
+        paths:
+          '/{n}':
+            parameters: # we expect one parameter in the path of type number
+            - name: 'n'
+              in: path
+              description: 'N'
+              required: true
+              type: number
+            get:
+              produces:
+              - 'text/plain'
+              responses:
+                '200':
+                  description: 'factorial calculated'
+                  schema:
+                    type: number
+              x-amazon-apigateway-request-validator: basic # enable validation for this resource
+              x-amazon-apigateway-integration: # this section connect the Lambda function with the API Gateway
+                httpMethod: POST
+                type: 'aws_proxy'
+                uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetFactorialLambda.Arn}/invocations'
+                passthroughBehavior: when_no_match
+  ApiGateway5XXErrorAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmDescription: 'Api Gateway server-side errors captured'
+      Namespace: 'AWS/ApiGateway'
+      MetricName: 5XXError
+      Dimensions:
+      - Name: ApiName
+        Value: !Ref ApiGateway
+      - Name: Stage
+        Value: Prod
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      AlarmActions:
+      - !Ref Alerts
+      TreatMissingData: notBreaching
+  GetFactorialLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'app/handler.factorial'
+      Runtime: 'nodejs6.10'
+      CodeUri:
+        Bucket: !Ref S3Bucket
+        Key: !Ref S3Key
+      Events:
+        Http:
+          Type: Api
+          Properties:
+            Path: /{n}
+            Method: get
+            RestApiId: !Ref ApiGateway
+  # This alarm is triggered, if the Node.js function returns or throws an Error
+  GetFactorialLambdaLambdaErrorsAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmDescription: 'GET /{n} lambda errors'
+      Namespace: 'AWS/Lambda'
+      MetricName: Errors
+      Dimensions:
+      - Name: FunctionName
+        Value: !Ref GetFactorialLambda
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      AlarmActions:
+      - !Ref Alerts
+      TreatMissingData: notBreaching
+  # This alarm is triggered, if the there are too many function invocations
+  GetFactorialLambdaLambdaThrottlesAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmDescription: 'GET /{n} lambda throttles'
+      Namespace: 'AWS/Lambda'
+      MetricName: Throttles
+      Dimensions:
+      - Name: FunctionName
+        Value: !Ref GetFactorialLambda
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      AlarmActions:
+      - !Ref Alerts
+      TreatMissingData: notBreaching
+# A CloudFormation stack can return information that is needed by other stacks or scripts.
+Outputs:
+  DNSName:
+    Description: 'The DNS name for the API gateway.'
+    Value: !Sub '${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com'
+    Export:
+      Name: !Sub '${AWS::StackName}-DNSName'
+  # The URL is needed to run the acceptance test against the correct endpoint
+  URL:
+    Description: 'URL to the API gateway.'
+    Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod'
+    Export:
+      Name: !Sub '${AWS::StackName}-URL'
+```
+* Ce template contient : 
+* * Une fonction Amazon Lambda
+* * Une API Gateway 
+* * Une surveillance avec des alarmaes basées sur CloudWatch
+* * Des notifications envoyés par SNS
+* Dans le dossier infrastructure on ajoute un fichier serverless.json qui contient les paramètres, veuillez adapter cet exemple avec votre nom de bucket et l'Object Key id qui correspond à votre cas) :
+```
+{
+  "Parameters": {
+    "S3Bucket": {"Fn::GetArtifactAtt": ["App", "BucketName"]},
+    "S3Key": {"Fn::GetArtifactAtt": ["App", "ObjectKey"]},
+    "AdminEmail": "your@email.com"
+  }
+}
+```
+
+* Ajouter une étape de déploiement à notre pipeline (dans le fichier pipeline.yaml)
+```
+   - Name: Production
+        Actions:
+        - Name: CreateChangeSet
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Provider: CloudFormation
+            Version: 1
+          Configuration:
+            ActionMode: CHANGE_SET_REPLACE
+            Capabilities: CAPABILITY_IAM
+            RoleArn: !GetAtt 'CloudFormationRole.Arn'
+            ChangeSetName: !Sub '${AWS::StackName}-production'
+            StackName: !Sub '${AWS::StackName}-production'
+            TemplatePath: 'Source::infrastructure/serverless.yml'
+            TemplateConfiguration: 'Source::infrastructure/serverless.json'
+          InputArtifacts:
+          - Name: Source
+          - Name: App
+          RunOrder: 1
+        - Name: ApplyChangeSet
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Provider: CloudFormation
+            Version: 1
+          Configuration:
+            ActionMode: CHANGE_SET_EXECUTE
+            Capabilities: CAPABILITY_IAM
+            ChangeSetName: !Sub '${AWS::StackName}-production'
+            StackName: !Sub '${AWS::StackName}-production'
+          RunOrder: 2
+```
+* On peut maintenant sauvegarder et lancer un pipeline :
+```
+git add deploy/pipeline.yml
+git add infrastructure/serverless.yaml
+git add infrastructure/serverless.json
+git commit -m "lab 03"
+git push deploy master
+```
+-> Félicitation votre pipeline est maintenant capable également de déployer votre code sur une architecture serverless
 
 ## Nettoyage
-Make sure you are deleting all the resources created while going through the labs.
-
-Delete the CodeCommit repository learn-codepipeline-$user.
-Got to the CloudFormation stack learn-codepipeline-$user and note down the name of the S3 bucket with the logical ID ArtifactsBucket.
-Delete the CloudFormation stack learn-codepipeline-$user.
-Delete the S3 bucket you noted down before deleting the CloudFormation stack.
-
+* Assurer vous de supprimer l'ensemble des éléments créer pour cet aexercice : 
+* * Supprimer le dépôt CodeCommit : learn-codepipeline-$user.
+* * Aller dans la stack CloudFormation learn-codepipeline-$useret et noter le nom du bucket S3 avec sont ID ArtifactsBucket
+* * Supprimer la stack CloudFormation learn-codepipeline-$user 
+* * Supprimer le bucket S3 dont vous avez noter le nom depuis la stack CloudFormation
