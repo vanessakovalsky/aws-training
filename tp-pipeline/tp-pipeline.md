@@ -243,7 +243,8 @@ Dans cette dernière partie, nous allons utilier un deuxième template pour cré
 Pour cela nous utilisons le framework SAM (Serverless Application Model) : https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html 
 * Créer un dossier infrastructure et un fichier serverless.yaml :
 ```
-
+mkdir infrastructure
+touch serverless.yaml
 ```
 * OUvrir le fichier et copier le contenu suivant à l'intérieur :
 ```
