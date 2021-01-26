@@ -26,7 +26,7 @@ NB : Les fonctions blueprints sont des fonctions pré-existantes, ici nous allon
 * * Bucket : sélectionner votre bucket
 * Laisser les autres paramètres par défaut et cliquer sur Add
 * En cliquant maintenant sur CreationMiniatureVotrePrenom , un écran s'affiche en dessous permettant de saisir du code à éxécuter
-* Sur cet écran, cliquer sur le menu Actions (à droite) puis sur Upload a file from Amazon S3 : https://s3.us-east-2.amazonaws.com/demobucket.aws-training-aelion.com/CreateThumbnail.zip
+* Sur cet écran, cliquer sur le menu Actions (à droite) puis sur Upload a file from Amazon S3 : https://s3-us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-88/2.3.prod/scripts/CreateThumbnail.zip
 * En bas de la page, dans la partie Settings, cliquer sur Edit
 * Modifier le Handler pour mettre : CreateThumbnail.handler (il s'agit du nom du fichier et de la fonction a appelé dans le code python importé)
 * Cliquer sur Save
