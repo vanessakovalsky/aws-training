@@ -18,7 +18,9 @@ Une IP elastique est une adresse IPv4 qui est accessible depuis internet. C'est 
 
 ## Création du VPC
 Voici un aperçu du VPC que l'on va créé :
-[Mon premier VPC](https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-84/2.0.7.prod/images/overview.png)
+
+![Mon premier VPC](https://s3.us-west-2.amazonaws.com/us-west-2-aws-training/awsu-spl/spl-84/2.0.7.prod/images/overview.png)
+
 * En haut à droit, cliquer sur VPC Dashboard
 * Cliquer sur Launch VPC Wizard pour accéder à l'assistant de création
 * Choisir VPC with public and private subnets
