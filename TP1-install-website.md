@@ -34,3 +34,7 @@ tar -xzvf latest-fr_FR.tar.gz .
 
 -> Pensez à envoyer votre script (ou le lien vers un dépôt) et une capture avec l'URL de votre site installé sur le Teams
 
+## Pour aller plus loin : 
+
+* Il est possible d'automatiser l'installation de wordpress en utilisant wp-cli : https://wp-cli.org/fr/ 
+* Rajouter au script cette partie avec l'installation de l'utilitaire et son utilisation 
