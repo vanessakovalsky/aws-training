@@ -4,27 +4,35 @@
 backupdate=$(date +%Y-%m-%d)
 
 #répertoire de backup
-dirbackup=/backup/backup-$backupdate
+dirbackup=/tmp/backup-$backupdate
 
 # création du répertoire de backup
-/bin/mkdir $dirbackup
+if [[-f  $dirbackup ]]
+    then
+        mkdir $dirbackup
+fi
 
-# tar -cjf /destination/fichier.tar.bz2 /source1 /source2 /sourceN
-# créé une archive bz2
-# sauvegarde de /home
-/bin/tar -cjf $dirbackup/home-$backupdate.tar.bz2 /home
+# tar -cjf /destination/fichier.tar.gz /source1 /source2 /sourceN
+# créé une archive gz
+# sauvegarde de /var/Www/html/zf
+tar -czvf $dirbackup/www-$backupdate.tar.gz /var/www/html/zf
 
 # sauvegarde mysql
-/usr/bin/mysqldump --user=xxxx --password=xxxx --all-databases | /usr/bin/gzip > $dirbackup/mysqldump-$backupdate.sql.gz
+mysqldump --user=admin_dump --password=Dump2021* --all-databases | /usr/bin/gzip > $dirbackup/mysqldump-$backupdate.sql.gz
 
 # Création du bucket
-bucketname=my-first-backup-bucket
+bucketname=my-first-backup-bucket-vanessa
 
-aws s3 mb s3://$bucketname
+if aws s3api head-bucket --bucket "$bucketname" 2>/dev/null
+    then
+    echo 'Le bucket existe déjà'
+else
+    aws s3 mb s3://$bucketname
+fi
 
 # Copie de l'archive du home
 
-aws s3 cp $dirbackup/home-$backupdate.tar.bz2 s3://$bucketname/
+aws s3 cp $dirbackup/www-$backupdate.tar.gz s3://$bucketname/
 
 # Copie de l'archive de DB 
 
