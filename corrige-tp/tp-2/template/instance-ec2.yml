@@ -7,10 +7,13 @@ Description:
 
 # get the name of the base stack which is created first and has VPC details
 Parameters:
-  VPCStackName:
-    Description: Name of the base VPC stack
-    Type: String
-    Default: BaseStack
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: 'The VPC ID'
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: 'The Subnet ID'
 
   KeyPairName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
@@ -34,8 +37,7 @@ Resources:
     Properties: 
       GroupDescription: Enable http(80) & ssh(22) access
       GroupName: WebServer-SG
-      VpcId: 
-        Fn::ImportValue: !Sub "${VPCStackName}-VPCID" # note here we are not using AWS::StackName
+      VpcId: !Ref VpcId
       SecurityGroupIngress:
         # allow http
         - IpProtocol: tcp
@@ -69,8 +71,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: !Ref InstanceType
-      SubnetId:
-        Fn::ImportValue: !Sub "${VPCStackName}-SUBNET"      
+      SubnetId: !Ref SubnetId
       SecurityGroupIds:
         - !Ref mySG
       KeyName: !Ref KeyPairName

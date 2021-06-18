@@ -4,6 +4,8 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://demovanessadevops.s3.us-west-2.amazonaws.com/bucket-s3.yml
+      Parameters:
+        BucketName: !Ref BucketName
 
   myVpc:
     Type: AWS::CloudFormation::Stack
@@ -19,12 +21,16 @@ Resources:
     Properties:
       TemplateURL: https://demovanessadevops.s3.us-west-2.amazonaws.com/instance-ec2.yml
       Parameters:
-        VPCStackName: !Ref VPCStackName
+        VpcId: !GetAtt myVpc.Outputs.VpcId
+        SubnetId: !GetAtt myVpc.Outputs.PublicSubnet1        
         KeyPairName: !Ref KeyPairName
         InstanceType: !Ref InstanceType
         InstanceImageId: !Ref InstanceImageId
 
 Parameters:  
+  BucketName: 
+    Description: Nom du Bucket
+    Type: String
   EnvironmentName:
     Description: An environment name that is prefixed to resource names
     Type: String

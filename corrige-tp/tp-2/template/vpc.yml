@@ -79,7 +79,7 @@ Resources:
       SubnetId: !Ref PublicSubnet1
 
 Outputs:
-  VPC:
+  VpcId:
     Description: A reference to the created VPC
     Value: !Ref VPC
 

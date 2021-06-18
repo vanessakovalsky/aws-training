@@ -1,8 +1,13 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Simple S3 bucket
+Parameters:
+  BucketName: 
+    Description: Nom du Bucket
+    Type: String
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: tp2-vanessa
+      BucketName: !Ref BucketName
+
