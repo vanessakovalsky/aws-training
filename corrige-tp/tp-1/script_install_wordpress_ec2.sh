@@ -139,17 +139,14 @@ echo 'Les règles de sécurité ont été ajoutées'
 
 # Lancer l'instance EC2
 
-INSTANCE_JSON=$(aws ec2 run-instances \
+INSTANCE_ID=$(aws ec2 run-instances \
     --image-id $IMAGE_ID \
     --count 1 \
     --instance-type t2.micro \
     --key-name $KEY_NAME \
     --security-group-ids $GROUP_ID \
     --subnet-id $SUBNET_PUBLIC_ID \
-    --user-data file://script_deploiement.sh )
-
-#@TODO fixer l'instance ID
-INSTANCE_ID=$(sudo jq -r .Instances[].InstanceId $INSTANCE_JSON)
+    --user-data file://script_deploiement.sh | sudo  jq '.Instances[0].InstanceId' | sed -e 's/^"//' -e 's/"$//' )
 
 echo "L'instance est lancée avec l'ID "$INSTANCE_ID
 
