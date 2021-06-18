@@ -1,0 +1,110 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 
+  Sample template to provision an EC2 Instance with public IP. Create a Security Group and associate with this EC2.
+  You will be billed for the AWS resources used if you create a stack from this template.
+  After deleting stack, remember to delete the associated S3 bucket.
+
+# get the name of the base stack which is created first and has VPC details
+Parameters:
+  VPCStackName:
+    Description: Name of the base VPC stack
+    Type: String
+    Default: BaseStack
+
+  KeyPairName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'  # standard type
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+
+  InstanceImageId:
+    Description: EC2 Image Id from this region
+    Type: AWS::EC2::Image::Id
+    Default: ami-0cb0e70f44e1a4bb5 # defaults for amazon linux in mumbai region  
+
+Resources:
+  # create a security group
+  mySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Enable http(80) & ssh(22) access
+      GroupName: WebServer-SG
+      VpcId: 
+        Fn::ImportValue: !Sub "${VPCStackName}-VPCID" # note here we are not using AWS::StackName
+      SecurityGroupIngress:
+        # allow http
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0 # any IP
+        # allow ssh  
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0 # only for demo else use your IP or corporate gateway IP
+      Tags: 
+       - Key: Name
+         Value: demo-sg
+       - Key: Application
+         Value:
+           Ref: "AWS::StackName"
+
+  # allow local traffic
+  SGBaseIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref mySG
+      IpProtocol: '-1'
+      FromPort: '-1'
+      ToPort: '-1'
+      SourceSecurityGroupId: !Ref mySG
+
+  # EC2 instance which will have access for http and ssh
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      SubnetId:
+        Fn::ImportValue: !Sub "${VPCStackName}-SUBNET"      
+      SecurityGroupIds:
+        - !Ref mySG
+      KeyName: !Ref KeyPairName
+      ImageId: !Ref InstanceImageId
+      UserData: 
+        Fn::Base64: |
+          #!/bin/bash -xe
+          yum update -y # good practice to update existing packages
+          yum install -y httpd # install web server 
+          systemctl start httpd
+          systemctl enable httpd
+          echo "Hello World" > /var/www/html/index.html
+
+      Tags: 
+       - Key: Name
+         Value: demo-ec2
+       - Key: Application
+         Value:
+           Ref: "AWS::StackName"
+
+# output important values for easy viewing in cloudformation dashboard
+Outputs:
+  InstanceId:
+    Description: InstanceId of the first EC2 instance
+    Value: !Ref EC2Instance
+
+  PublicDNS:
+    Description: Public DNS Name of the EC2 instance
+    Value: !GetAtt 
+      - EC2Instance
+      - PublicDnsName
+
+  PublicIP:
+    Description: Public IP address of the EC2 instance
+    Value: !GetAtt 
+      - EC2Instance
+      - PublicIp

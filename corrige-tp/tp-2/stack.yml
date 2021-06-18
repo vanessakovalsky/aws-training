@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  myBucket:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://demovanessadevops.s3.us-west-2.amazonaws.com/bucket-s3.yml
+
+  myVpc:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://demovanessadevops.s3.us-west-2.amazonaws.com/vpc.yml
+      Parameters:
+        EnvironmentName: !Ref EnvironmentName
+        VpcCIDR: !Ref VpcCIDR
+        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
+
+  myInstance:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://demovanessadevops.s3.us-west-2.amazonaws.com/instance-ec2.yml
+      Parameters:
+        VPCStackName: !Ref VPCStackName
+        KeyPairName: !Ref KeyPairName
+        InstanceType: !Ref InstanceType
+        InstanceImageId: !Ref InstanceImageId
+
+Parameters:  
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.192.0.0/16
+
+  PublicSubnet1CIDR:
+    Description: Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 10.192.10.0/24  
+
+  VPCStackName:
+    Description: Name of the base VPC stack
+    Type: String
+    Default: BaseStack
+
+  KeyPairName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: 'AWS::EC2::KeyPair::KeyName'  # standard type
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+
+  InstanceImageId:
+    Description: EC2 Image Id from this region
+    Type: AWS::EC2::Image::Id
+    Default: ami-0cb0e70f44e1a4bb5 # defaults for amazon linux in mumbai region  
