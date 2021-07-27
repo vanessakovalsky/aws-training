@@ -44,7 +44,7 @@ npm install --prefix scripts/ && npm install --prefix application
 ```
 * Ensuite nous devons définir la région à utilisé, par exemple pour us-east-1
 ```
-echo "export AWS_REGION=us-east-1" >> env.sh && source env.sh
+echo "export AWS_DEFAULT_REGION=us-east-1" >> env.sh && source env.sh
 ```
 * Le fichier env.sh permet de charger les variables d'environnement, si vous fermez l'onglet avec cloud 9, il faudra recharger les variables d'environnement avec la commande :
 ```
