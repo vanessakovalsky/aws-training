@@ -35,7 +35,7 @@ NB : Les fonctions blueprints sont des fonctions pré-existantes, ici nous allon
 ## Tester l'execution de son code avec Lambda
 * Commencer par uploader une image sur votre bucket
 * Rendre cette image public, afin que Lambda puisse accéder à l'image
-* Dans les permissions du rôle crée par Lambda, Ajouter AmazonS3AllAccess comme police
+* Dans les permissions du rôle crée par Lambda, Ajouter AmazonS3FullAccess comme police
 * Créer un nouveau bucket avec le même nom que l'autre en rajoutant -resized au nom du bucket (fonctionnement dans le code, on copie l'image original et on la retaille et l'upload dans ce bucket avec ce nom spécific)
 * Sur l'écran de configuration, cliquer Test pour créer un évènement de test
 * * Dans Event template, choisir : Amazon S3 Put
