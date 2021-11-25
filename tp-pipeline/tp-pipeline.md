@@ -396,7 +396,7 @@ Outputs:
 * * Une API Gateway 
 * * Une surveillance avec des alarmaes basées sur CloudWatch
 * * Des notifications envoyés par SNS
-* Dans le dossier infrastructure on ajoute un fichier serverless.json qui contient les paramètres, veuillez adapter cet exemple avec votre nom de bucket et l'Object Key id qui correspond à votre cas) :
+* Dans le dossier infrastructure on ajoute un fichier serverless.json qui contient les paramètres, ces paramètres sont récupérés dynamiquement par la fonction GetArtifcatAtt (plus d'info ici : https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline-parameter-override-functions.html ) :
 ```
 {
   "Parameters": {
