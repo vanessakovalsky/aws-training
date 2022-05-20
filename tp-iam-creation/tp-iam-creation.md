@@ -1,4 +1,4 @@
-# Création d'un security group et attachement d'une Clé SSH
+# Création d'un utilisateur et définition des droits
 
 Cet exercice a pour objectif :
 * découvrir les utilisateurs et les groupes IAM
