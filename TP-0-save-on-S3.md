@@ -34,7 +34,6 @@ dirbackup=/backup/backup-$backupdate
 * Puis transferer les deux fichiers de sauvegarde vers le bucket via AWS-CLI
 * Supprimer dans le bucket via AWS CLI les fichiers qui ont plus de 7 jours 
 
--> Envoyer votre script ou un lien vers votre script sur le Teams
 
 ## Pour aller plus loin : 
 * Ajouter dans le script lors de la création du bucket, une règle qui déplace automatiquement les vieilles sauvegarde vers un autre bucket en mode infrequent access  
