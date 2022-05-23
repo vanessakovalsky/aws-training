@@ -18,7 +18,7 @@ https://github.com/vanessakovalsky/aws-training/blob/master/tp-s3-storage/tp-s3-
 NB : Les fonctions blueprints sont des fonctions pré-existantes, ici nous allons utilier du code custom, en partant de 0.
 * Les options à renseigner pour la création de la fonction :
 * * Function name : CreationMiniatureVotrePrenom
-* * Runtime : Python 3.9
+* * Runtime : Python 3.7
 * Cliquer sur Create Function
 * La fonction est créé, nous allons maintenant ajouté le code
 * Sur l'écran, cliquer sur + Add triger 
