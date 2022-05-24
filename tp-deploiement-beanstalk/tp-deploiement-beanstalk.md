@@ -55,8 +55,8 @@ cd ..
 sudo yum groupinstall "Development Tools"
 sudo yum install zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64 python3 -y
 git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
-./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
- ```
+python3 ./aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
+```
  * A la fin de l'installation, l'installer vous recommande d'exporter le chemin de l'éxecutable de eb avec une commande export, pensez à la lancer. La commande ressemble à ça :
 ```
  echo 'export PATH="/home/ec2-user/.ebcli-virtual-env/executables:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
