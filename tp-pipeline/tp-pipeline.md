@@ -330,7 +330,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: 'app/handler.factorial'
-      Runtime: 'nodejs14.x'
+      Runtime: 'nodejs16.x'
       CodeUri:
         Bucket: !Ref S3Bucket
         Key: !Ref S3Key
