@@ -100,7 +100,7 @@ sudo ./aws/install
 ```
 * Puis on se connecte au registre ECR :
 ```
-/usr/local/bin/aws ecr get-login-password | docker login --username AWS --password-stdin 433676120466.dkr.ecr.us-east-2.amazonaws.com/demo-repository
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/s6z9z6k1
 ```
 * Il est alors nécessaire notamment pour pousser notre image de tagguer notre image comme suit :
 ```
