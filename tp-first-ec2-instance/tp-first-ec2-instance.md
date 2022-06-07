@@ -6,6 +6,7 @@ Cet exercice a pour objectif:
 * d'utiliser les groupes de sécurité
 * de redimensionner l'instance créé et le stockage
 * de découvrir les limites d'une instance EC2
+* de créer une image AMI à partir d'une instance EC2
 
 Durée : 45 à 60 minutes
 
@@ -17,13 +18,29 @@ Durée : 45 à 60 minutes
 * Dans le menu de gauche, cliquer sur Instances
 * Cliquer alors sur Launch Instance qui permet de créer une instance
 * Une série d'étape est alors à suivre :
-* * Step 1 : choose an Amazon Machine Image (AMI)
+* * Nom : mettre WebServer de [votre-nom] 
+* * Choose an Amazon Machine Image (AMI)
 * * * Choisir Amazon Linux 2 AMI 
 * * * Cliquer sur continuer
-* * Step 2 : choose an instane type :
+* * Choose an instance type :
 * * * Choisir t2.micro
 * * * Cliquer sur continuer
-* * Step 3: Configure Instance Details :
+* * Paire de clé :
+* * * Cliquer sur créer une paire de clé
+* * * Une fenêtre pour l'ajout de clé SSH apparait
+* * * * Choisir : Create a new key pair
+* * * * Entrer votre nom
+* * * * Cliquer sur Download Key pair
+* * * * Vous récupérer alors la clé qui vous permettra de vous connecter sur votre machine
+* * Paramètre réseau :
+* * * Configure Security Group : Le groupe de sécurité permet de gérer un firewall virtuel sur votre instance
+* * * Laisser coché : Create a new security group
+* * * Security group name : Groupe de securité de [votre-nom]
+* * * Laisser la règle SSH en place
+* * Configure Storage
+* * * AWS propose par défaut un stockage sur un disque SSD de 8 Go
+* * * Laisser les options par défaut et cliquer sur Next : add tags
+* * Advanced Details :
 * * * Lisez les options proposées sans les modifier
 * * * Dans user data, coller les commandes suivantes (qui seront alors exécutées au lancement de l'instance, et qui permettent d'installer et de démarrer Apache le serveur web) 
 ```
@@ -33,40 +50,18 @@ systemctl enable httpd
 systemctl start httpd
 echo '<html><h1>Hello From Your Web Server!</h1></html>' > /var/www/html/index.html
 ```
-* * * Cliquer sur Next : add storage
-* * Step 4: Add Storage
-* * * AWS propose par défaut un stockage sur un disque SSD de 8 Go
-* * * Laisser les options par défaut et cliquer sur Next : add tags
-* * Step 5: Add Tags
-* * * Cliquer sur Add tag pour saisir un tag 
-* * * Key : name
-* * * Value : WebServer de [votre-nom]
-* * * Cliquer sur Next : configure security group
-* * Step 6: Configure Security Group
-Le groupe de sécurité permet de gérer un firewall virtuel sur votre instance
-* * * Laisser coché : Create a new security group
-* * * Security group name : Groupe de securité de [votre-nom]
-* * * Laisser la règle SSH en place
-* * Cliquer sur Launch 
-* Une fenêtre pour l'ajout de clé SSH apparait
-* * Choisir : Create a new key pair
-* * Entrer votre nom
-* * Cliquer sur Download Key pair
-* Vous récupérer alors la clé qui vous permettra de vous connecter sur votre machine
 * Cliquer sur Launch Instance pour lancer votre instance
-* ouvrir votre outil SSH et se connecter à l'instance avec la clé téléchargée 
+* ouvrir votre outil SSH et se connecter à l'instance avec la clé téléchargée (vous pouvez récupérer les commandes de connexions dans l'écran de l'instance en cliquant sur Se connecter )
 -> Félicitation votre instance fonctionne :) 
 
 ## Monitorer son instance
 * Revenir sur la console AWS
 * Dans le menu de gauche du service EC2, cliquer sur Instances, puis sur la ligne correspondant à votre instance
-* En bas, cliquer sur l'onglet Status Check
-* Que voyez vous ?
 * Cliquer sur l'onglet Monitoring
 * Que voyez vous ?
-* Dans le menu Actions, choisir Instance settings > Get system logs
+* Dans le menu Actions, choisir Surveiller et dépanner > Get system logs
 * Qu'est ce qui s'affiche alors ?
-* Dans le menu Actions, choisir Instance settings > Get instance screenshot
+* Dans le menu Actions, choisir Surveiller et dépanner > Get instance screenshot
 * Vous récupérer alors une image qui affiche la console de votre machine, en cas d'erreur ou d'impossibilité de connexion SSH à votre instance, cela vous permettra de débugguer
 
 ## Accéder à son instance sur le web
@@ -74,15 +69,14 @@ Le groupe de sécurité permet de gérer un firewall virtuel sur votre instance
 * Dans la console, sur votre instance cliquer sur Description
 * Récupérer l'adresse IPv4 de votre machine et coller la dans un onglet de votre navigateur
 * Que constatez vous ?
-* Retourner sur la console, dans le menu de gauche choisir Security groups
-* Cliquer sur la ligne correspondant à votre groupe de sécurité
+* Retourner sur la console, dans la page de votre instance, cliquer sur l'onglet Sécurité puis sur le lien vers votre groupe de sécurité
 * Cliquer sur l'onglet Inbound Rules
 * Cliquer sur Edit Inbound rules pour accéder à la modification
 * CLiquer sur Add rule pour ajouter la règle suivante :
 * * Type: HTTP
 * * Source : Anywhere
 * Cliquer sur Save Rules
-* Retourner sur l'onglet avec l'IP de l'instance, et raffrair la page
+* Retourner sur l'onglet avec l'IP de l'instance, et raffraichir la page
 * Votre page devrait s'afficher avec le message : 
 Hello From Your Web Server!
 
@@ -106,6 +100,14 @@ L'instance est redimensionnée, il est nécessaire de la redémarrer
 * Dans le service EC2 de la console web, cliquer sur Limits dans le menu de Gauche
 * Vous pouvez alors voir les limites, et filtrer en cliquant sur All limits pour changer les limites afficher.
 * Quels sont les limites de nombre d'instances par région (vérifier pour quelques régions)?
+
+## Créer une image AMI à partir de son instance
+* Revenir à la liste des instances en cliquant sur instances dans le menu de gauche
+* Sur la ligne qui correspond à votre instance, faire un clic droit puis aller dans Images puis cliquer sur Create an image
+* Donner un nom à votre image et une description
+* Cliquer sur Create an image
+* Votre image est maintenant créer
+* Résilier votre première instance, et recréer une autre instance EC2 à partir de l'image que vous avez crée. Vous devriez alors pouvoir directement accéder à la page web qui affiche le message Hello From Webserver !
 
 -> Félicitations, vous savez manipuler les instances EC2 d'AWS
 
