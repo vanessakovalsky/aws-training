@@ -39,7 +39,7 @@ Durée : 45 à 60 minutes
 * * * Laisser la règle SSH en place
 * * Configure Storage
 * * * AWS propose par défaut un stockage sur un disque SSD de 8 Go
-* * * Laisser les options par défaut et cliquer sur Next : add tags
+* * * Laisser les options par défaut et cliquer sur Next 
 * * Advanced Details :
 * * * Lisez les options proposées sans les modifier
 * * * Dans user data, coller les commandes suivantes (qui seront alors exécutées au lancement de l'instance, et qui permettent d'installer et de démarrer Apache le serveur web) 
