@@ -9,13 +9,6 @@ Cet exercice a pour objectifs :
 
 Durée : 30 à 40 minutes
 
-## Création d'une adresse IP elastique
-Une IP elastique est une adresse IPv4 qui est accessible depuis internet. C'est une adresse IP statique qui ne changera donc pas. Vous pouvez associer cette adressse IP à un VPC ou une instance EC2. Vous gardez l'adresse IP jusqu'à que vous la supprimiez. 
-* Dans la console, dans le menu Service, choisir VPC.
-* Dans le menu de gauche, cliquer sur Elastic IP
-* Sur la page des adresses IP Elastic, cliquer sur Allocate
-* Vous pouvez voir l'adresse IP alloué, qu'on utilisera juste après lors de la création du VPC.
-
 ## Création du VPC
 Voici un aperçu du VPC que l'on va créé :
 
