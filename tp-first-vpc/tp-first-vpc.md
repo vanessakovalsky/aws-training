@@ -5,7 +5,6 @@ Cet exercice a pour objectifs :
 * De créer un sous réseau public et un privé
 * D'utiliser le NAT Gateway
 * De définir des tables de routes
-* D'utiliser Elastic IP
 
 Durée : 30 à 40 minutes
 
