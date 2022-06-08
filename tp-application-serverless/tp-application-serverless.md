@@ -45,11 +45,15 @@ npm install --prefix scripts/ && npm install --prefix application
 * Ensuite nous devons définir la région à utilisé, par exemple pour us-east-1
 ```
 echo "export AWS_DEFAULT_REGION=us-east-1" >> env.sh && source env.sh
+echo "export AWS_REGION=us-east-1" >> env.sh && source env.sh
+
 ```
 * Le fichier env.sh permet de charger les variables d'environnement, si vous fermez l'onglet avec cloud 9, il faudra recharger les variables d'environnement avec la commande :
 ```
 source env.sh
 ```
+* Enfin nous allons rechercher et remplacer dans tous les fichiers l'expressions 'turn-based' par 'turn-based-{prenom}' (remplacer {prenom} par votre prenom sans les accolades)
+
 -> L'environnement de travail est prêt passons à la suite avec la mise en place de la base de données
 
 
@@ -59,10 +63,7 @@ source env.sh
 ```
 bash scripts/create-table.sh
 ```
-* Aller dans le service DynamoDb, quelle est le nom de la table créé ? 
-* Quelles sont les clés utilisées ?
-Le schéma de chaque jeu est le suivant 
-![https://d1.awsstatic.com/Getting%20Started/AWS-Labs-Turn-Based-Game/turn-based-game-schema.e4cd3826657521e17bd481d2063d8ecd5cf7fe48.png](https://d1.awsstatic.com/Getting%20Started/AWS-Labs-Turn-Based-Game/turn-based-game-schema.e4cd3826657521e17bd481d2063d8ecd5cf7fe48.png)
+* Aller dans le service DynamoDb, quelle est le nom de la table créé ?  A t'elle des données ?
 
 ## Importer un jeu 
 * Un script est disponible dans script pour créer un premier jeu, il s'appelle CreateGame.js
@@ -145,6 +146,9 @@ User Pool Client created with id <client-id>
 * * Création d'un rôle IAM pour la fonction lambda
 * * Ajout des polices qui permettent aux rôles d'effectuer les actions nécessaires à l'application comme l'accès à la table DynamoDB ou l'envoi de SMS via Amazon SNS
 * * Création de la fonction lambda à partir de l'archive zip
+
+*  Avant de lancer le script remplacer la ligne  '--runtime nodejs10.x \'par'  --runtime nodejs16.x \' dans le fichier script/create-lambda.sh
+
 * Pour effectuer l'ensemble de ces actions, comme pour le reste vous pouvez utiliser la console web ou la commande suivante :
 ```
 bash scripts/create-lambda.sh
