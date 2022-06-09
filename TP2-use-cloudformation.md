@@ -8,11 +8,23 @@ Ce TP a pour objectif :
 
 * Vous devez créer des templates pour cloud formations pour les éléments suivants : 
     * un VPC (et l'ensemble des ressources nécessaires associées pour pouvoir utiliser une instance en serveur web)
-    * une instance ec2  qui déploiera le même stack LAMP (Apache, PHP, MaraiDB) que sur le TP précédent 
+    * une instance ec2  qui déploiera Wordpress et ces dépendances ainsi que votre clé SSH publique et un groupe de sécurité qui ouvre le port 80 et le port 22. Voici les commandes à exécuter lors de la création de l'instance (user data) :
+
+```
+yum install httpd openssl php-common php-curl php-json php-mbstring php-mysql php-xml php-zip
+yum install mysql-server
+service mysqld start
+mysqladmin -u root create blog
+cd /var/www/html
+wget http://wordpress.org/latest.tar.gz
+tar -xzvf latest-fr_FR.tar.gz . 
+```
     * un bucket s3
 
 Vous aurez alors une architecture qui ressemblera à celle ci 
 ![Architecture TP2](https://www.wellarchitectedlabs.com/Reliability/200_Deploy_and_Update_CloudFormation/Images/StackUpdates.png)
+
+* /!\ NB : pour faire marcher votre site vous devez vous connecter en ssh sur l'instance, executer la commande : `mysql_secure_installation` , répondre au question, et vous rendre sur l'adresse IP publique de votre site pour finir l'installation en graphique
 
 ## Script de déploiement de la stack
 
