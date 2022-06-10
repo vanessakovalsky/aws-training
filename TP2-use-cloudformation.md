@@ -12,8 +12,9 @@ Ce TP a pour objectif :
 
 ```
 yum install httpd openssl php-common php-curl php-json php-mbstring php-mysql php-xml php-zip
-yum install mysql-server
-service mysqld start
+sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm
+sudo amazon-linux-extras install epel -y
+sudo yum -y install mysql-community-serverservice mysqld start
 mysqladmin -u root create blog
 cd /var/www/html
 wget http://wordpress.org/latest.tar.gz
