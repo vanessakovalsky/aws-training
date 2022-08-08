@@ -31,21 +31,20 @@ et donc pas accessible sur internet
 * Copier l'adresse : Object URL 
 * Coller l'adresse dans un autre onglet de votre navigateur et charger la page
 * Vous obtenez alors un messag d'accès refusé
-* Revenir sur l'onglet de la console
-* Sur la page affichant les informations de votre fichier, cliquer 
-sur l'onglet Permissions
-* Dans la section Public access, choisir Everyone
-* Choisir Read object pour donner les droits en lecture
-* Cliquer sur Save
-Un message d'erreur apparait vous indiquant que tous les accès publics
-sont bloqués
 * Revenir sur le bucket en cliquant sur son nom
 * Cliquer sur l'onglet Permissions
 * Cliquer sur Edit pour accéder aux modifications
 * Déselectionner l'option Block all public access
 * Cliquer sur Save 
 * Une boite de dialogue s'ouvre pour vous demander de confirmer votre choix
-* Allez vérifier dans les permissions du fichier si le message d'erreur a disparu
+* Toujours dans cet anglais cliquer sur Edit sur la liste en face de Object Ownership
+* Sur la nouvelle page, cliquer sur le bouton en face de ACLs enabled, puis sur Save Changes
+* Revenir sur l'onglet de la console
+* Sur la page affichant les informations de votre fichier, cliquer 
+sur l'onglet Permissions
+* Dans la section Public access, choisir Everyone
+* Choisir Read object pour donner les droits en lecture
+* Cliquer sur Save
 * Revenir sur l'onglet du fichier et recharger la page
 
 ## Créer une police de bucket
