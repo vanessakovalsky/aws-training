@@ -96,7 +96,10 @@ Maintenant que l'image de notre application est prête nous allons la stocker su
 ```
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
-sudo ./aws/install  
+sudo ./aws/install
+sudo rm -rf /usr/local/bin/aws
+sudo rm -rf /usr/bin/aws
+sudo ln -s /usr/local/aws-cli/v2/current/bin/aws /usr/local/bin/aws
 ```
 * Puis on se connecte au registre ECR :
 ```
